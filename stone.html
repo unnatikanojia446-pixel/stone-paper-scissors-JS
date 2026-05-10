@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    }
+    h1 {
+        background-color: #081b31;
+        color: aliceblue;
+        height: 5rem;
+        text-align: center;
+        line-height: 5rem;
+    }
+    .choice{
+      height: 165px;
+      width: 165px;
+      
+    }
+    img{
+        height: 150px;
+        width: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .choices{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+        margin-top: 5rem;
+
+    }
+    .choice:hover{
+        opacity: 0.5;
+        cursor: pointer;
+    }
+    .ScoreBoard{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem;
+        margin: 3rem;
+        gap: 5rem;
+
+    }
+    #user-score, #computer-score{
+        font-size: 5rem;
+    }
+    #msg{
+        background-color: #081b31;
+        color: aliceblue;
+        font-size: 2rem;
+        margin-top: 5rem;
+        display: inline;
+        padding: 1rem;
+        border-radius: 1rem;
+
+    }
+    
+      
+</style>
+<body>
+    <h1>Rock Paper Scissors</h1>
+    <div class="choices">
+        <div class="choice" id="rock">
+            <img src="rock.jpeg">
+        </div>
+
+        <div class="choice" id="paper">
+            <img src="paper.jpeg">
+        </div>
+
+        <div class="choice" id="scissors">   
+            <img src="scissor.jpeg">
+        </div>
+    </div>
+
+    <div class="ScoreBoard">
+        <div class="Score">
+            <p id="user-score">0</p>
+            <p>You</p>
+        </div>
+
+        <div class="Score">
+            <p id="computer-score">0</p>
+            <p>Computer</p>
+        </div>
+    </div>
+
+    <div class="msg-container">
+        <p id="msg">Play Your Move</p>
+    </div>
+    <script>
+        let userScore = 0;
+        let computerScore = 0;
+
+const choices = document.querySelectorAll(".choice");
+const msg = document.querySelector("#msg")
+const userScorePara = document.querySelector("#user-score")
+const computerScorePara = document.querySelector("#computer-score")
+
+const genComputerChoice = () => {
+    const options = ["rock", "paper", "scissors"];
+    // 1. Assign the random number to a variable
+    const randIdx = Math.floor(Math.random() * 3);
+    // 2. Use square brackets [] to access array items
+    return options[randIdx];
+};
+
+const drawGame = () =>{
+    msg.innerText = `game was draw. play again. your ${userChoice} matches ${computerChoice}`
+    msg.style.backgroundColor = "#081b31"
+}
+
+const showWinner = (userWin, userChoice, computerChoice) => {
+    if(userWin){
+        userScore++;
+        userScorePara.innerText = userScore;
+        msg.innerText = `you win your ${userChoice} beats ${computerChoice}`
+        msg.style.backgroundColor = "green"
+    }else{
+        computerScore++;
+        computerScorePara.innerText = computerScore
+        msg.innerText = `you lose computer ${computerChoice} beats your ${userChoice}`
+        msg.style.backgroundColor = "red"
+    }
+}
+
+// 3. Added 'userChoice' as a parameter here
+const playGame = (userChoice) => {
+    console.log("user choice:", userChoice);
+    
+    // 4. Generate computer choice
+    const computerChoice = genComputerChoice();
+    console.log("computer choice:", computerChoice);
+
+    if(userChoice === computerChoice){
+      drawGame()
+    } else{
+        let userWin = true;
+        if(userChoice === "rock"){
+            userWin = computerChoice === "paper"? false:true;
+        } else if (userChoice === "paper"
+        )  {
+            userWin = computerChoice === "scissors" ? false:true
+        }else if( userChoice === "scissors"){
+            userWin = computerChoice === "rock"? false:true
+        }
+        showWinner(userWin, userChoice, computerChoice);
+    }
+
+    // TODO: Add your win/loss logic here!
+};
+
+choices.forEach((choice) => {
+    choice.addEventListener("click", () => {
+        const userChoice = choice.getAttribute("id");
+        playGame(userChoice);
+    });
+});
+    </script>
+    
+</body>
+</html>
